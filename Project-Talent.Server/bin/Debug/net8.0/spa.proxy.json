@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:5173",
+"RedirectUrl": "",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "C:\\Users\\joima\\Desktop\\Industry Connect\\Assignments\\Project-Talent\\Project-Talent.Server\\..\\project-talent.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}
