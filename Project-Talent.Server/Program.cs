@@ -20,6 +20,18 @@ builder.Services.AddScoped<ICustomerServices,CustomerServices>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy",
+        builder =>
+        {
+            builder.WithOrigins("https://127.0.0.1:5173")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+        });
+});
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -32,11 +44,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 app.UseHttpsRedirection();
+app.Use((context, next) =>
+{
+    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+    context.Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    return next.Invoke();
+});
+app.UseCors("MyPolicy");
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapControllerRoute(
+  name: "default",
+  pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("/index.html");
 

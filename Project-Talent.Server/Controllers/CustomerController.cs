@@ -30,28 +30,62 @@ namespace Project_Talent.Server.Controllers
         
 
         // GET api/<CustomerController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("id")]
+        [Produces(typeof(CustomerViewModel))]
+        public async Task<IActionResult> GetById([FromQuery]int id)
         {
-            return "value";
+            if ( id == null)
+            {
+                return NotFound($"No Id ids given");
+            }
+            
+            var customer = await _customerService.GetCustomersById(id);
+
+            if (customer is null )
+            {
+                return NotFound($"Customer with {id} not found.");
+
+            }
+            return Ok(customer);
         }
 
         // POST api/<CustomerController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult>  Post([FromBody] CreateCustomerViewModel model)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
+            var customer = await _customerService.CreateCustomer(model);
+            return Ok(customer);
         }
 
         // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put([FromBody] CustomerViewModel model)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
+            var customer = await _customerService.EditCustomer(model);
+            return Ok(customer);
         }
 
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            //var custId = await _customerService.GetCustomersById(id);
+
+            if (id == null)
+            {
+                return NotFound($"Customer with {id} not found.");
+
+            }else
+            {
+            await _customerService.DeleteCustomer(id);
+
+            }
+            return Ok(id);
+
         }
     }
 }

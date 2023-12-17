@@ -6,6 +6,8 @@ namespace Project_Talent.Server.Services.Interfaces
     {
         public Task<int> CreateCustomer(CreateCustomerViewModel model);
         public Task<List<CustomerViewModel>> GetCustomers();
+        public Task<CustomerViewModel> GetCustomersById(int id);
+
         public Task<CustomerViewModel> EditCustomer(CustomerViewModel viewModel);
         public Task<bool> DeleteCustomer(int id);
     }

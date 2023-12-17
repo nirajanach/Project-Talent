@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Project_Talent.Server.Models;
 using Project_Talent.Server.Services.Interfaces;
@@ -25,6 +26,16 @@ namespace Project_Talent.Server.Services.Classes
 
             return _mapper.Map<List<CustomerViewModel>>(customers);
         }
+        public async Task<CustomerViewModel> GetCustomersById(int id)
+        {
+            var customer = await _context.Customers.FirstOrDefaultAsync( c => c.Id == id );
+            
+            return _mapper.Map<CustomerViewModel>( customer );
+
+
+        }
+
+
         public async Task<int> CreateCustomer(CreateCustomerViewModel model)
         {
             var customer = new Customer()
@@ -58,20 +69,15 @@ namespace Project_Talent.Server.Services.Classes
         public async Task<bool> DeleteCustomer(int id)
         {
 
-
-           try
-            {
                 var cust = new Customer() { Id = id };
+            var foundCustomer = await _context.Customers.FindAsync(cust.Id);
 
-                _context.Customers.Remove(cust);
+                _context.Customers.Remove(foundCustomer);
             await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+                return true;          
+
+
+ 
 
         }
     }

@@ -139,3 +139,4 @@ C:\Users\joima\Desktop\Industry Connect\Assignments\Project-Talent\Project-Talen
 C:\Users\joima\Desktop\Industry Connect\Assignments\Project-Talent\Project-Talent.Server\obj\Debug\net8.0\Project-Talent.Server.pdb
 C:\Users\joima\Desktop\Industry Connect\Assignments\Project-Talent\Project-Talent.Server\obj\Debug\net8.0\Project-Talent.Server.genruntimeconfig.cache
 C:\Users\joima\Desktop\Industry Connect\Assignments\Project-Talent\Project-Talent.Server\obj\Debug\net8.0\ref\Project-Talent.Server.dll
+C:\Users\joima\Desktop\Industry Connect\Assignments\Project-Talent\Project-Talent.Server\obj\Debug\net8.0\Project-Talent.Server.sourcelink.json

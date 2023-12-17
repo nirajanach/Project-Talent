@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vxX0V3HL3ZnYK1PXHYitjjCLk5kuhCnjtx0jrCA7hso=",
+  "Hash": "fp7Jl1+g2NTO9WmwWnn8Hri1fORTLwjJHpoKWxcUaKU=",
   "Source": "Project-Talent.Server",
   "BasePath": "_content/Project-Talent.Server",
   "Mode": "Default",
@@ -11,10 +11,10 @@
       "Version": 2,
       "Source": "project-talent.client",
       "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
       "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
     }
   ],
