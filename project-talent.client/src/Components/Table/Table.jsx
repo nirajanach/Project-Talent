@@ -24,7 +24,7 @@ const Table = ({columns, data}) => {
                   <td key={index}>{row[column]}</td>
                 ))}
                 <td scope="col" >
-                  <Button className="" variant="warning">
+                  <Button className="" variant="warning" >
                     Edit
                   </Button>
                 </td>
@@ -42,12 +42,3 @@ const Table = ({columns, data}) => {
 };
 
 export default Table;
-
-
-    //   <div className="table-responsive">
-    //     <table className="table table-bordered">
-    //       <caption>List of Customers</caption>          
-    //       <TableHead />
-    //       <TableBody />
-    //     </table>
-    //   </div> */}
