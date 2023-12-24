@@ -12,8 +12,8 @@ using Project_Talent.Server.Models;
 namespace Project_Talent.Server.Migrations
 {
     [DbContext(typeof(TalentDBContext))]
-    [Migration("20231216124625_updatecustomerpageviewmodel")]
-    partial class updatecustomerpageviewmodel
+    [Migration("20231221040257_AddStoreDbSet")]
+    partial class AddStoreDbSet
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,11 +68,11 @@ namespace Project_Talent.Server.Migrations
 
             modelBuilder.Entity("Project_Talent.Server.Models.Sale", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -86,7 +86,7 @@ namespace Project_Talent.Server.Migrations
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -115,7 +115,7 @@ namespace Project_Talent.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Store");
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("Project_Talent.Server.Models.Sale", b =>

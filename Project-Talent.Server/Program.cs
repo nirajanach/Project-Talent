@@ -14,6 +14,10 @@ builder.Services.AddDbContext<TalentDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<ICustomerServices,CustomerServices>();
+builder.Services.AddScoped<IProductServices, ProductServices>();
+builder.Services.AddScoped<IStoreServices, StoreServices>();
+builder.Services.AddScoped<ISaleServices, SaleServices>();
+
 
 //builder.Services.AddAut(typeof(MappingProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -28,6 +28,12 @@ function NavBar() {
             <Link className="nav-link" to="/blogs">
               Blogs
             </Link>
+            <Link className="nav-link" to="/stores">
+              Stores
+            </Link>
+            <Link className="nav-link" to="/products">
+              Products
+            </Link>
             <Link className="nav-link" to="/customers">
               Customers
             </Link>

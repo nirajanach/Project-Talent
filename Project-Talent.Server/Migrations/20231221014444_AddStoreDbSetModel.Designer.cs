@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_Talent.Server.Models;
 
@@ -11,9 +12,11 @@ using Project_Talent.Server.Models;
 namespace Project_Talent.Server.Migrations
 {
     [DbContext(typeof(TalentDBContext))]
-    partial class TalentDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231221014444_AddStoreDbSetModel")]
+    partial class AddStoreDbSetModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,11 +68,11 @@ namespace Project_Talent.Server.Migrations
 
             modelBuilder.Entity("Project_Talent.Server.Models.Sale", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -83,7 +86,7 @@ namespace Project_Talent.Server.Migrations
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.HasIndex("CustomerId");
 

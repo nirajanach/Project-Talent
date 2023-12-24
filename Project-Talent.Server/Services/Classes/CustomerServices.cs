@@ -12,8 +12,8 @@ namespace Project_Talent.Server.Services.Classes
         private readonly TalentDBContext _context;
         private readonly IMapper _mapper;
 
-        public CustomerServices(TalentDBContext context, IMapper mapper) 
-        { 
+        public CustomerServices(TalentDBContext context, IMapper mapper)
+        {
             _context = context;
             _mapper = mapper;
 
@@ -21,16 +21,16 @@ namespace Project_Talent.Server.Services.Classes
 
         public async Task<List<CustomerViewModel>> GetCustomers()
         {
-            var customers = await _context.Customers               
+            var customers = await _context.Customers
                 .ToListAsync();
 
             return _mapper.Map<List<CustomerViewModel>>(customers);
         }
         public async Task<CustomerViewModel> GetCustomersById(int id)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync( c => c.Id == id );
-            
-            return _mapper.Map<CustomerViewModel>( customer );
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == id);
+
+            return _mapper.Map<CustomerViewModel>(customer);
 
 
         }
@@ -51,7 +51,7 @@ namespace Project_Talent.Server.Services.Classes
         }
         public async Task<CustomerViewModel> EditCustomer(CustomerViewModel model)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync( c => c.Id == model.Id );
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == model.Id);
 
             if (customer == null)
             {
@@ -61,7 +61,7 @@ namespace Project_Talent.Server.Services.Classes
             customer.Name = model.Name;
             customer.Address = model.Address;
 
-           _context.Customers.Update(customer);
+            _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<CustomerViewModel>(customer);
@@ -69,15 +69,15 @@ namespace Project_Talent.Server.Services.Classes
         public async Task<bool> DeleteCustomer(int id)
         {
 
-                var cust = new Customer() { Id = id };
+            var cust = new Customer() { Id = id };
             var foundCustomer = await _context.Customers.FindAsync(cust.Id);
 
-                _context.Customers.Remove(foundCustomer);
+            _context.Customers.Remove(foundCustomer);
             await _context.SaveChangesAsync();
-                return true;          
+            return true;
 
 
- 
+
 
         }
     }

@@ -4,7 +4,8 @@ namespace Project_Talent.Server.Models
 {
     public class Sale
     {
-        public int id { get; set; }
+        public int Id { get; set; }
+        public DateTime DateSold { get; set; }
 
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
@@ -14,7 +15,6 @@ namespace Project_Talent.Server.Models
 
         [ForeignKey("Store")]
         public int StoreId { get; set; }
-        public DateTime DateSold { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Product Product { get; set; }
