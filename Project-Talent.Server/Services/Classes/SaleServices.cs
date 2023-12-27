@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Project_Talent.Server.Models;
+using Project_Talent.Server.Models.Dto;
 using Project_Talent.Server.Services.Interfaces;
 using Project_Talent.Server.ViewModels.SaleViewModel;
 
@@ -17,11 +18,32 @@ namespace Project_Talent.Server.Services.Interfaces
             _mapper = mapper;
         }
 
-        public async Task<List<SaleViewModel>> GetSales()
+        public async Task<List<SaleDto>> GetSales()
         {
-            var sales = await _context.Sales.ToListAsync();
+            
+            var sales = new List<SaleDto>();
 
-            return _mapper.Map<List<SaleViewModel>>(sales);
+            foreach (Sale item in _context.Sales)
+            {
+                var customer = await _context.Customers.FirstOrDefaultAsync(customer => customer.Id == item.CustomerId);
+                var product = await _context.Products.FirstOrDefaultAsync(product => product.Id == item.ProductId);
+                var store = await _context.Stores.FirstOrDefaultAsync(store => store.Id == item.StoreId);
+
+                var sale = new SaleDto()
+                {
+                    Id = item.Id,
+                    CustomerName = customer?.Name,
+                    ProductName = product?.Name,
+                    StoreName = store?.Name,
+                    DateSold = item.DateSold,
+                };
+
+                sales.Add(sale);
+            }
+
+            
+
+            return sales;
 
 
         }
@@ -36,14 +58,18 @@ namespace Project_Talent.Server.Services.Interfaces
         }
 
 
-        public async Task<string> CreateSale(CreateSaleViewModel model)
+        public async Task<string> CreateSale(SaleViewModel model)
         {
             var sale = new Sale()
             {
                 DateSold = model.DateSold,
-                Customer = model.Customer,
-                Store = model.Store,
-                Product = model.Product
+                CustomerId = model.CustomerId,
+                StoreId = model.StoreId,
+                ProductId = model.ProductId,
+                Customer = await _context.Customers.FirstOrDefaultAsync(customer => customer.Id == model.CustomerId),
+                Store = await _context.Stores.FirstOrDefaultAsync(store => store.Id == model.StoreId),
+                Product = await _context.Products.FirstOrDefaultAsync(product => product.Id == model.ProductId),
+                
             };
 
             _context.Sales.Add(sale);
@@ -63,9 +89,11 @@ namespace Project_Talent.Server.Services.Interfaces
             {
                 throw new ApplicationException();
             }
-            sale.Customer = model.Customer;
-            sale.Product = model.Product;
-            sale.Store = model.Store;
+            sale.CustomerId = model.CustomerId;
+            sale.ProductId = model.ProductId;
+            sale.StoreId = model.StoreId;
+            sale.DateSold = model.DateSold;
+
 
             _context.Sales.Update(sale);
             await _context.SaveChangesAsync();

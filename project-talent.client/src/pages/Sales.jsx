@@ -1,90 +1,138 @@
-// Stores.jsx
+// Sales.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import BASE_URL from "../constants/LocalStorageKeys";
-import ReusableModal from "../Components/Modal/ReusableModal";
-import ReusableTable from "../Components/Table/ReusableTable";
-import ReusableConfirmationModal from "../Components/Modal/ReusableConfirmationModal";
-
-function Stores() {
-  // ... (existing code)
-  const [getStore , setGetStore] = useState([]);
+import ReusableModal from "../Components/ReusableComponents/ReusableModal";
+import ReusableTable from "../Components/ReusableComponents/ReusableTable";
+import ReusableConfirmationModal from "../Components/ReusableComponents/ReusableConfirmationModal";
+function Sales() {
+  const [getSales, setGetSales] = useState([]);
+  const [getCustomers, setGetCustomers] = useState([]);
+  const [getProducts, setGetProducts] = useState([]);
+  const [getStores, setGetStores] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deleteRecordId, setDeleteRecordId] = useState(null);
   const [editData, setEditData] = useState(null);
-  const [confirmationMessage, setConfirmationMessage] = useState(
-    "Are you sure you want to delete this record?"
-  );
-
-  const storeColumns = [
-    { id: "name", label: "Name" },
-    { id: "address", label: "Address" },
-  ];
-
- 
-
-  const [modalFields, setModalFields] = useState(storeColumns);
 
   useEffect(() => {
+    fetchSales();
+    fetchCustomers();
+    fetchProducts();
     fetchStores();
   }, [showModal]);
 
+  const fetchSales = async () => {
+    const response = await axios.get(BASE_URL + "Sale");
+    setGetSales(response.data);
+  };
+
+  const fetchCustomers = async () => {
+    const response = await axios.get(BASE_URL + "Customer");
+    setGetCustomers(response.data);
+  };
+
+  const fetchProducts = async () => {
+    const response = await axios.get(BASE_URL + "Product");
+    setGetProducts(response.data);
+  };
+
   const fetchStores = async () => {
     const response = await axios.get(BASE_URL + "Store");
-    setGetStore(response.data);
+    setGetStores(response.data);
   };
 
-  const handleShow = () => setShowModal(!showModal);
+  // ... (existing code for handleShow, handleClose, handleEdit, handleDelete)
+ const handleShow = () => setShowModal(!showModal);
 
-  const handleClose = () => {
-    setShowModal(false);
-    setEditData(null);
-  };
+ const handleClose = () => {
+   setShowModal(false);
+   setEditData(null);
+ };
 
-  const handleEdit = (id) => {
-    const dataToEdit = getStore.find((store) => store.id === id);
-    setEditData(dataToEdit);
-    setShowModal(true);
-  };
+ const handleEdit = (id) => {
+   const dataToEdit = getSales.find((sale) => sale.id === id);
+   setEditData(dataToEdit);
+   setShowModal(true);
+ };
 
-  const handleDelete = (id) => {
-    setDeleteRecordId(id);
-    setShowConfirmation(true);
-  };
+ const handleDelete = (id) => {
+   setDeleteRecordId(id);
+   setShowConfirmation(true);
+ };
 
-  const handleConfirmDelete = async () => {
-    const url = `${BASE_URL}Store/${deleteRecordId}`;
-    await axios.delete(url);
-    fetchStores();
-    setShowConfirmation(false);
-  };
+ const handleConfirmDelete = async () => {
+   const url = `${BASE_URL}Sale/${deleteRecordId}`;
+   await axios.delete(url);
+   fetchSales();
+   setShowConfirmation(false);
+ };
+
 
   const handleModalSubmit = async (event, formData) => {
     event.preventDefault();
-    const url = BASE_URL + "Store";
-    const data = editData ? { ...formData, id: editData.id } : formData;
+    const url = BASE_URL + "Sale";
+
+    formData.customerId = parseInt(formData.customerId, 10) || null ;
+    formData.productId = parseInt(formData.productId, 10) || null;
+    formData.storeId = parseInt(formData.storeId, 10) || null;
+ 
+    // Ensure to set the correct IDs for the dropdown fields
+    const data = editData
+      ? {
+          ...formData,
+          customerId: formData.customerId || editData.customerId,
+          productId: formData.productId || editData.productId,
+          storeId: formData.storeId || editData.storeId,
+          id: editData.id,
+        }
+      : formData;
+console.log("EditData:", editData);
+
+console.log("Data:", data);
 
     const response = editData
       ? await axios.put(`${url}/${editData.id}`, data)
       : await axios.post(url, data);
 
     if (!editData) {
-      setGetStore((prevStores) => [...prevStores, response.data]);
+      setGetSales((prevSales) => [...prevSales, response.data]);
     }
 
-    console.log("Record saved successfully");
+    console.log("Record saved successfully with " + response.data);
     handleClose();
   };
 
-  // ... (existing code)
+  const salesColumns = [
+    { id: "customerName", label: "Customer" },
+    { id: "productName", label: "Product" },
+    { id: "storeName", label: "Store" },
+    { id: "dateSold", label: "Date Sold" },
+  ];
+
+  const salesModalFields = [
+    {
+      id: "customerId",
+      label: "Customer",
+      type: "dropdown",
+      options: getCustomers,
+    },
+    {
+      id: "productId",
+      label: "Product",
+      type: "dropdown",
+      options: getProducts,
+    },
+    { id: "storeId", label: "Store", type: "dropdown", options: getStores },
+    { id: "dateSold", label: "Date Sold", type: "date" },
+  ];
 
   return (
     <div className="container">
       <div className="btn-group">
         <Button className="mb-2 me-1" variant="primary" onClick={handleShow}>
-          New Store
+          New Sale
         </Button>
         {showModal && (
           <ReusableModal
@@ -92,14 +140,19 @@ function Stores() {
             closeModal={handleClose}
             handleSubmit={handleModalSubmit}
             editData={editData}
-            title={editData ? "Edit Store" : "Create Store"}
-            formFields={modalFields}
+            title={editData ? "Edit Sale" : "Create Sale"}
+            formFields={salesModalFields}
           />
         )}
       </div>
       <ReusableTable
-        columns={modalFields}
-        data={getStore}
+        columns={salesColumns}
+        data={getSales.map((sale) => ({
+          ...sale,
+          customerName: sale.customerName,
+          productName: sale.productName,
+          storeName: sale.storeName,
+        }))}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
       />
@@ -107,10 +160,10 @@ function Stores() {
         showConfirmation={showConfirmation}
         handleConfirm={handleConfirmDelete}
         handleClose={() => setShowConfirmation(false)}
-        message={confirmationMessage}
+        message="Are you sure ?"
       />
     </div>
   );
 }
 
-export default Stores;
+export default Sales;

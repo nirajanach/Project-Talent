@@ -11,7 +11,7 @@ namespace Project_Talent.Server.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Sales_Store_StoreId",
+                name: "FK_Sales_Store",
                 table: "Sales");
 
             migrationBuilder.DropPrimaryKey(
@@ -28,7 +28,7 @@ namespace Project_Talent.Server.Migrations
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Sales_Stores_StoreId",
+                name: "FK_Sales_Stores",
                 table: "Sales",
                 column: "StoreId",
                 principalTable: "Stores",
@@ -40,7 +40,7 @@ namespace Project_Talent.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Sales_Stores_StoreId",
+                name: "FK_Sales_Stores",
                 table: "Sales");
 
             migrationBuilder.DropPrimaryKey(
@@ -57,7 +57,7 @@ namespace Project_Talent.Server.Migrations
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Sales_Store_StoreId",
+                name: "FK_Sales_Store",
                 table: "Sales",
                 column: "StoreId",
                 principalTable: "Store",

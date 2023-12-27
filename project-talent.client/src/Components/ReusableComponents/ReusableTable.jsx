@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 function ReusableTable({ columns, data, handleEdit, handleDelete }) {
   const capitalizeFirstLetter = (string) => {
@@ -26,16 +27,18 @@ function ReusableTable({ columns, data, handleEdit, handleDelete }) {
           {data.map((row) => (
             <tr key={row.id}>
               {columns.map((column) => (
-                <td key={column.id}>{row[column.id]}</td>
+                <td key={column.id}>
+                  {column.id === "dateSold" // Excluding the time from the date
+                    ? new Date(row[column.id]).toLocaleDateString()
+                    : row[column.id]}
+                </td>
               ))}
               <td scope="col">
-                <Button
-                  className="text-centerss"
-                  variant="warning"
-                  onClick={() => handleEdit(row.id)}
-                >
+                <Button variant="warning" onClick={() => handleEdit(row.id)}>
                   <FaEdit />
-                  Edit
+                  <span style={{ marginLeft: "2px", verticalAlign: "middle" }}>
+                    Edit
+                  </span>
                 </Button>
               </td>
               <td scope="col">
@@ -44,7 +47,10 @@ function ReusableTable({ columns, data, handleEdit, handleDelete }) {
                   variant="danger"
                   onClick={() => handleDelete(row.id)}
                 >
-                  Delete
+                <MdDelete/>
+                  <span style={{ marginLeft: "2px", verticalAlign: "middle" }}>
+                    Delete
+                  </span>
                 </Button>
               </td>
             </tr>

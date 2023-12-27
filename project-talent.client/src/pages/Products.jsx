@@ -3,25 +3,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import BASE_URL from "../constants/LocalStorageKeys";
-import ReusableModal from "../Components/Modal/ReusableModal";
-import ReusableTable from "../Components/Table/ReusableTable";
-import ReusableConfirmationModal from "../Components/Modal/ReusableConfirmationModal";
-
+import ReusableModal from "../Components/ReusableComponents/ReusableModal";
+import ReusableTable from "../Components/ReusableComponents/ReusableTable";
+import ReusableConfirmationModal from "../Components/ReusableComponents/ReusableConfirmationModal";
 function Products() {
-  // ... (existing code)
+ 
     const [getProduct, setGetProduct] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [deleteRecordId, setDeleteRecordId] = useState(null);
     const [editData, setEditData] = useState(null);
      const [confirmationMessage, setConfirmationMessage] = useState(
-       "Are you sure you want to delete this record?"
+       "Are you sure ?"
      );
 
-  const customerColumns = [
-    { id: "name", label: "Name" },
-    { id: "address", label: "Address" },
-  ];
 
   const productColumns = [
     { id: "name", label: "Name" },

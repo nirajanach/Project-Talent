@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project_Talent.Server.Models.Dto;
 using Project_Talent.Server.Services.Classes;
 using Project_Talent.Server.Services.Interfaces;
 using Project_Talent.Server.ViewModels.SaleViewModel;
@@ -54,7 +55,7 @@ namespace Project_Talent.Server.Controllers
 
         // POST: SaleController/Create
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] CreateSaleViewModel model)
+        public async Task<ActionResult> Create([FromBody] SaleViewModel model)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 

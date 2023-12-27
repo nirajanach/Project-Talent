@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Project_Talent.Server.Models.Dto;
 
 namespace Project_Talent.Server.Models
 {
@@ -24,32 +25,59 @@ namespace Project_Talent.Server.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Product>()
-                .Property(p => p.Price)
+            modelBuilder.Entity<Customer>(entity =>
+            {
+
+                entity.ToTable("Customer");
+
+             
+            });
+
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.ToTable("Product");
+
+
+                entity.Property(p => p.Price)
                 .HasColumnType("money");
 
+            }
+            );
 
-            modelBuilder.Entity<Sale>()
-                .Property(s => s.DateSold)
-                .HasColumnType("datetime");
+            modelBuilder.Entity<Store>(entity =>
+            {
+                entity.HasKey(e => e.Id);
 
-            modelBuilder.Entity<Customer>()
-            .HasMany(c => c.ProductsSold)
-            .WithOne(s => s.Customer)
-            .HasForeignKey(s => s.CustomerId);
+                entity.ToTable("Store");           
+                   
+            });
 
-            modelBuilder.Entity<Product>()
-                .HasMany(p => p.ProductSold)
-                .WithOne(s => s.Product)
-                .HasForeignKey(s => s.ProductId);
+            modelBuilder.Entity<Sale>(
+                entity =>
+                {
+                    entity.HasKey(e => e.Id);
 
-            modelBuilder.Entity<Store>()
-                .HasMany(st => st.ProductSold)
-                .WithOne(s => s.Store)
-                .HasForeignKey(s => s.StoreId);
+                   
+                    entity.Property(e => e.DateSold).HasColumnType("date");
+
+                    entity.HasOne(d => d.Customer).WithMany(p => p.ProductsSold)
+                        .HasForeignKey(d => d.CustomerId).OnDelete(DeleteBehavior.Cascade); ;
+
+                    entity.HasOne(d => d.Product).WithMany(p => p.ProductSold)
+                        .HasForeignKey(d => d.ProductId).OnDelete(DeleteBehavior.Cascade); ;
+
+                    entity.HasOne(d => d.Store).WithMany(p => p.ProductSold)
+                        .HasForeignKey(d => d.StoreId).OnDelete(DeleteBehavior.Cascade); ;
+                });            
+
+  
+
         }
 
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<SaleDto> SaleDto { get; set; }
     }
 }
