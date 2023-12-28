@@ -29,7 +29,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("MyPolicy",
         builder =>
         {
-            builder.WithOrigins("https://127.0.0.1:5173", "https://localhost:5173")
+            builder.WithOrigins(["https://projecttalent1.azurewebsites.net/","https://127.0.0.1:5173", "https://localhost:5173" ])
                    .AllowAnyHeader()
                    .AllowAnyMethod()
                    .AllowCredentials();
@@ -51,12 +51,12 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-app.Use((context, next) =>
-{
-    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-    context.Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    return next.Invoke();
-});
+//app.Use((context, next) =>
+//{
+//    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+//    context.Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//    return next.Invoke();
+//});
 app.UseCors("MyPolicy");
 
 app.UseAuthorization();

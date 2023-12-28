@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "ZQnHMAOM0xglPI/ZzHRKibjdTaxmnswnvYGLXGz+BWQ=",
+  "Source": "Project-Talent.Server",
+  "BasePath": "_content/Project-Talent.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\joima\\Desktop\\Industry Connect\\Assignments\\Project-Talent\\project-talent.client\\project-talent.client.esproj",
+      "Version": 2,
+      "Source": "project-talent.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Release;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Release;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

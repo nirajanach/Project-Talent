@@ -19,7 +19,7 @@ function ReusableModal({
     setFormData({ ...formData, [field]: value });
   };
 
-  {console.log("formData from reusablemodal : " + JSON.stringify(formData));}
+ /* {console.log("formData from reusablemodal : " + JSON.stringify(formData));}*/
 
   const renderFormField = (field) => {
     switch (field.type) {
