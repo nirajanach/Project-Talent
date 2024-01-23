@@ -88,9 +88,9 @@ function Sales() {
           id: editData.id,
         }
       : formData;
-console.log("EditData:", editData);
+//console.log("EditData:", editData);
 
-console.log("Data:", data);
+//console.log("Data:", data);
 
     const response = editData
       ? await axios.put(`${url}/${editData.id}`, data)
@@ -100,7 +100,7 @@ console.log("Data:", data);
       setGetSales((prevSales) => [...prevSales, response.data]);
     }
 
-    console.log("Record saved successfully with " + response.data);
+    //console.log("Record saved successfully");
     handleClose();
   };
 
