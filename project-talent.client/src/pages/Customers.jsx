@@ -31,9 +31,18 @@ function Customers() {
     fetchCustomers();
   }, [showModal]);
 
-  const fetchCustomers = async () => {
-    const response = await axios.get(BASE_URL + "Customer");
-    setGetCustomer(response.data);
+    const fetchCustomers = async () => {
+
+        try {
+            // Your Axios request here
+            const response = await axios.get(BASE_URL + "Customer");
+            setGetCustomer(response.data);
+        } catch (error) {
+            // Handle the error here
+            console.log("Axios request failed:", error);
+        }
+
+    
   };
 
   const handleShow = () => setShowModal(!showModal);
@@ -66,16 +75,24 @@ function Customers() {
     const url = BASE_URL + "Customer";
     const data = editData ? { ...formData, id: editData.id } : formData;
 
-    const response = editData
-      ? await axios.put(`${url}/${editData.id}`, data)
-      : await axios.post(url, data);
+      try {
+          // Your Axios request here
+          const response = editData
+              ? await axios.put(`${url}/${editData.id}`, data)
+              : await axios.post(url, data);
 
-    if (!editData) {
-      setGetCustomer((prevCustomers) => [...prevCustomers, response.data]);
-    }
+          if (!editData) {
+              setGetCustomer((prevCustomers) => [...prevCustomers, response.data]);
+          }
 
-    console.log("Record saved successfully");
-    handleClose();
+          console.log("Record saved successfully");
+          handleClose();
+         
+      } catch (error) {
+          // Handle the error here
+          console.log("Axios request failed:", error);
+      }
+    
   };
 
   // ... (existing code)

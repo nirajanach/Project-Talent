@@ -1,10 +1,13 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpLogging; // HttpLoggingFields
 using Project_Talent.Server.Mapping;
 using Project_Talent.Server.Models;
 using Project_Talent.Server.Services.Classes;
 using Project_Talent.Server.Services.Interfaces;
 using Microsoft.Extensions.Azure;
+using System.Net.Http.Headers;
+using Microsoft.Net.Http.Headers; // MediaTypeWithQualityHeaderValue
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,19 +31,41 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyPolicy",
-        builder =>
+        policy =>
         {
-            builder.WithOrigins(["https://projecttalent1.azurewebsites.net/","https://127.0.0.1:5173", "https://localhost:5173" ])
-                   .AllowAnyHeader()
-                   .AllowAnyMethod()
-                   .AllowCredentials();
+            policy.WithOrigins("https://talentonboardingapi.azurewebsites.net",
+                "https://localhost:5173")
+            .WithMethods("PUT", "DELETE", "POST", "GET")
+             .WithHeaders(
+             HeaderNames.Origin,
+             HeaderNames.ContentType,
+             HeaderNames.Accept,           
+             HeaderNames.XRequestedWith
+             );
         });
 });
+
+//builder.Services.AddHttpLogging(options =>
+//{// Add the Origin header so it will not be redacted.
+//    options.RequestHeaders.Add("Origin");   
+//    // By default, the response body is not included.
+//    options.LoggingFields = HttpLoggingFields.All;
+//});
 builder.Services.AddAzureClients(clientBuilder =>
 {
     clientBuilder.AddBlobServiceClient(builder.Configuration["$web:blob"], preferMsi: true);
     clientBuilder.AddQueueServiceClient(builder.Configuration["$web:queue"], preferMsi: true);
 });
+
+
+//builder.Services.AddHttpClient(name: "localhost",
+//configureClient: options => {
+//    options.BaseAddress = new("https://localhost:5173/");
+//    options.DefaultRequestHeaders.Accept.Add(
+//    new MediaTypeWithQualityHeaderValue(
+//    "application/json", 1.0));
+//});
+
 
 var app = builder.Build();
 
@@ -57,13 +82,15 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
 //app.Use((context, next) =>
 //{
-//    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+//context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+//    context.Response.Headers.Add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
 //    context.Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//    return next.Invoke();
+//return next.Invoke();
 //});
-app.UseCors("MyPolicy");
+app.UseCors();
 
 app.UseAuthorization();
 
