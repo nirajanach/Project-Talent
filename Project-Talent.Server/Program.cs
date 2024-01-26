@@ -4,6 +4,7 @@ using Project_Talent.Server.Mapping;
 using Project_Talent.Server.Models;
 using Project_Talent.Server.Services.Classes;
 using Project_Talent.Server.Services.Interfaces;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,11 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod()
                    .AllowCredentials();
         });
+});
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration["$web:blob"], preferMsi: true);
+    clientBuilder.AddQueueServiceClient(builder.Configuration["$web:queue"], preferMsi: true);
 });
 
 var app = builder.Build();
